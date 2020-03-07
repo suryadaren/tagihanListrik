@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="/lte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -84,7 +85,7 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
-            <a href="/logout_kolektor" class="nav-link">
+            <a href="/kolektor/logout" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout 
@@ -142,6 +143,21 @@
 <script src="/lte/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/lte/dist/js/demo.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+      @if(Session::has('message'))
+        var type="{{Session::get('alert-type','success')}}"
+      
+        switch(type){
+          case 'success':
+           toastr.info("{{ Session::get('message') }}");
+           break;
+        case 'error':
+          toastr.error("{{ Session::get('message') }}");
+          break;
+        }
+      @endif
+    </script>
 <!-- page script -->
 <script>
   $(function () {

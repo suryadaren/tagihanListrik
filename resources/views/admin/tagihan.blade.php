@@ -37,19 +37,26 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Jakarta</td>
-                  <td>Rp. 1000.000,-</td>
-                  <td>Rp. 500.000,-</td>
-                  <td>12/12/2019</td>
-                  <td><span class="badge badge-success">Lunas</span></td>
-                  <td class="center">
-                    <a onclick="lihat('nama','foto','jumlah_tagihan','jumlah_dibayar','waktu_tenggat','status')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a href="/admin/tagihan/edit/1" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                  </td>
-                </tr>
+                  @foreach($tagihan_kolektors as $tagihan)
+                    <tr>
+                      <td>{{$tagihan->kolektor->nama}}</td>
+                      <td>{{$tagihan->kolektor->region}}</td>
+                      <td>Rp. {{$tagihan->jumlah_tagihan}},-</td>
+                      <td>Rp. {{$tagihan->jumlah_dibayar}},-</td>
+                      <td>{{$tagihan->waktu_tenggat_pembayaran}}</td>
+                      @if($tagihan->status_tagihan == "lunas")
+                      <td><span class="badge badge-success">{{$tagihan->status_tagihan}}</span></td>
+                      @elseif($tagihan->status_tagihan == "belum lunas")
+                      <td><span class="badge badge-danger">{{$tagihan->status_tagihan}}</span></td>
+                      @else
+                      <td><span class="badge badge-warning">{{$tagihan->status_tagihan}}</span></td>
+                      @endif
+                      <td class="center">
+                        <a onclick="lihat('{{$tagihan->kolektor->nama}}','{{Storage::url($tagihan->kolektor->foto)}}','{{$tagihan->jumlah_tagihan}}','{{$tagihan->jumlah_dibayar}}','{{$tagihan->waktu_tenggat_pembayaran}}','{{$tagihan->status_tagihan}}')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                        <a href="/admin/tagihan/edit/{{$tagihan->id}}" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -74,7 +81,7 @@
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-info">
                 <h3 class="widget-user-username" id="nama">Alexander Pierce</h3>
-                <h5 class="widget-user-desc">Founder & CEO</h5>
+                <h5 class="widget-user-desc">Kolektor</h5>
               </div>
               <div class="widget-user-image">
                 <img class="img-circle elevation-2" id="foto" src="/lte/dist/img/user1-128x128.jpg" alt="User Avatar">
@@ -102,9 +109,9 @@
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <div class="callout callout-danger">
+                    <div class="callout callout-info">
                       <h5>Status</h5>
-                      <p style="font-size: 12px" id="statu">belum lunas</p>
+                      <p style="font-size: 12px" id="status">belum lunas</p>
                     </div>
                   </div>
                 </div>
@@ -118,40 +125,15 @@
       <!-- /.modal -->
 
 
-      <!-- modal hapus -->
-      <div class="modal fade" id="hapus">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Hapus Data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Apakah Anda yakin ingin menghapus data ini ?</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
-                <input type="hidden" name="id">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <input type="submit" value="Ya" class="btn btn-primary">
-              </form>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-
-
 <script>
   function lihat(nama,foto,jumlah_tagihan,jumlah_dibayar,waktu_tenggat,status){
+    $('#nama').text(nama);
+    $('#jumlah_tagihan').text('Rp. '+jumlah_tagihan+',-');
+    $('#jumlah_dibayar').text('Rp. '+jumlah_dibayar+',-');
+    $('#waktu_tenggat').text(waktu_tenggat);
+    $('#status').text(status);
+    $('#foto').attr('src',foto);
     $('#lihat').modal();
-  }
-  function hapus(id){
-    $('#hapus').modal();
   }
 </script>
 

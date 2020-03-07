@@ -27,22 +27,36 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Pengirim</th>
-                  <th>Tanggal</th>
+                  <th>Kategori</th>
                   <th>Deskripsi</th>
+                  <th>Tanggal</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>26 Nov 2019</td>
-                  <td>Pembayaran Tagihan</td>
-                  <td>
-                    <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($notifikasis as $notifikasi)
+                  @if($notifikasi->status == "belum dibaca")
+                      <tr style="background-color: #f4f6f9">
+                        <td>{{$notifikasi->kategori}}</td>
+                        <td>{{$notifikasi->deskripsi}}</td>
+                        <td>{{$notifikasi->created_at->format('d M Y')}}</td>
+                        <td>
+                          <a href="admin/lihat_notifikasi/{{$notifikasi->kategori}}/{{$notifikasi->id}}" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                          <a onclick="hapus('{{$notifikasi->id}}')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                        </td>
+                      </tr>
+                    @else
+                      <tr style="background-color: white">
+                        <td>{{$notifikasi->kategori}}</td>
+                        <td>{{$notifikasi->deskripsi}}</td>
+                        <td>{{$notifikasi->created_at->format('d M Y')}}</td>
+                        <td>
+                          <a href="admin/lihat_notifikasi/{{$notifikasi->kategori}}/{{$notifikasi->id}}" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                          <a onclick="hapus('{{$notifikasi->id}}')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                        </td>
+                      </tr>
+                    @endif
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -55,45 +69,6 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-
-
-    <!-- modal lihat -->
-      <div class="modal fade" id="lihat">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-info">
-                <h3 class="widget-user-username" id="nama">Alexander Pierce</h3>
-                <h5 class="widget-user-desc">Founder & CEO</h5>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" id="foto" src="/lte/dist/img/user1-128x128.jpg" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="callout callout-info">
-                      <h5>Jumlah Pembayaran</h5>
-                      <p style="font-size: 12px" id="jumlah_pembayaran">Rp. 10.000.000,-</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="callout callout-info">
-                      <h5>Tanggal Pembayaran</h5>
-                      <p style="font-size: 12px" id="tanggal_pembayaran">20 Nov 2019</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-
 
       <!-- modal hapus -->
       <div class="modal fade" id="hapus">
@@ -109,7 +84,8 @@
               <p>Apakah Anda yakin ingin menghapus notifikasi ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
+              <form name="form" action="/admin/hapus_notifikasi" method="post">
+                {{csrf_field()}}
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -124,14 +100,9 @@
 
 
 <script>
-  function lihat(nama, foto, jumlah_pembayaran, tanggal_pembayaran){
-    $('#lihat').modal();
-  }
   function hapus(id){
+    document.forms['form']['id'].value=id;
     $('#hapus').modal();
-  }
-  function setujui(id){
-    $('#setujui').modal();
   }
 </script>
 

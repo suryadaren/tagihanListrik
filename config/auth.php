@@ -40,6 +40,18 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'kolektor' => [
+            'driver' => 'session',
+            'provider' => 'kolektors',
+        ],
+        'anggota_kolektor' => [
+            'driver' => 'session',
+            'provider' => 'anggota_kolektors',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -69,6 +81,18 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\admin::class,
+        ],
+        'kolektors' => [
+            'driver' => 'eloquent',
+            'model' => App\kolektor::class,
+        ],
+        'anggota_kolektors' => [
+            'driver' => 'eloquent',
+            'model' => App\anggota_kolektor::class,
         ],
 
         // 'users' => [
