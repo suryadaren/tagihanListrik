@@ -32,7 +32,7 @@
                     <div class="inner">
 
                       <p>Total Tagihan</p>
-                      <h3>Rp. 20.000.000,-</h3>
+                      <h3>Rp. {{$total_tagihan}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -45,7 +45,7 @@
                     <div class="inner">
 
                       <p>Total Telah Dibayar</p>
-                      <h3>Rp. 15.000.000,-</h3>
+                      <h3>Rp. {{$total_dibayar}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -58,7 +58,7 @@
                     <div class="inner">
 
                       <p>Sisa Pembayaran</p>
-                      <h3>Rp. 5.000.000,-</h3>
+                      <h3>Rp. {{$sisa}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -80,18 +80,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Jakarta</td>
-                  <td>Rp. 1000.000,-</td>
-                  <td>12/12/2019</td>
-                  <td><span class="badge badge-success">Verifikasi</span></td>
-                  <td>
-                    <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                    <a onclick="setujui('id')" class="btn btn-success"><abbr title="Verifikasi"><i class="fa fa-check"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($anggotas as $anggota)
+                  @foreach($anggota->pembayarans as $pembayaran)
+                    <tr>
+                      <td>{{$anggota->nama}}</td>
+                      <td>{{$anggota->region}}</td>
+                      <td>Rp. {{$pembayaran->jumlah_pembayaran}},-</td>
+                      <td>{{$pembayaran->created_at}}</td>
+                      <td>
+                        @if($pembayaran->status_pembayaran == "verifikasi")
+                        <span class="badge badge-success">Verifikasi</span>
+                        @elseif($pembayaran->status_pembayaran == "menunggu verifikasi")
+                        <span class="badge badge-warning">Menunggu Verifikasi</span>
+                        @else
+                        <span class="badge badge-danger">ditolak</span>
+                        @endif
+                    </td>
+                      <td>
+                        <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+
+                        @if($pembayaran->status_pembayaran == "menunggu verifikasi")
+                        <a onclick="setujui('{{$pembayaran->id}}')" class="btn btn-success"><abbr title="Verifikasi"><i class="fa fa-check"></i> </abbr></a>
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -187,7 +201,8 @@
               <p>Apakah Anda yakin ingin menyetujui pembayaran ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/setujui">
+              <form name="form_setujui" action="/kolektor/setujui_pembayaran" method="post">
+                {{csrf_field()}}
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -208,6 +223,7 @@
     $('#hapus').modal();
   }
   function setujui(id){
+    document.forms['form_setujui']['id'].value=id;
     $('#setujui').modal();
   }
 </script>

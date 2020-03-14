@@ -22,66 +22,82 @@
             <div class="card-header">
               <h3 class="card-title">Tambah Data Anggota</h3>
             </div>
+            <form action="/kolektor/simpan_anggota" method="post" enctype="multipart/form-data">
+            {{csrf_field()}}
             <!-- /.card-header -->
-            <div class="card-body">
+              <div class="card-body">
 
-              <div class="row">
-                <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6">
 
-                <div class="input-group mb-3">
-                  <input type="email" class="form-control" placeholder="Email">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
-                  </div>
-                </div>
-
-                <div class="input-group mb-3">
-                  <input type="password" class="form-control" placeholder="password">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
-                  </div>
-                </div>
-
-                <div class="input-group mb-3">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Pilih File Foto KTP</label>
-                  </div>
-                </div>
-
-                <div class="input-group mb-3">
-                  <input type="submit" class="btn btn-primary" style="width: 200px" value="SIMPAN">
-                </div>
-
-                </div>
-                <!-- /.col -->
-                <div class="col-md-6">
-
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Telepon">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">@</span>
-                    </div>
+                  <div class="form-group-inner mb-3">
+                    <input value="{{old('email')}}" type="email" name="email" class="form-control" placeholder="Email">
+                      @if($errors->has('email'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('email')}} </div>
+                      @endif
                   </div>
 
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Nomor KTP">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">@</span>
-                    </div>
+                  <div class="form-group-inner mb-3">
+                    <input value="{{old('nama')}}" type="nama" name="nama" class="form-control" placeholder="Nama">
+                      @if($errors->has('nama'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('nama')}} </div>
+                      @endif
                   </div>
 
-                  <div class="input-group mb-3">
+                  <div class="form-group-inner mb-3">
+                    <input value="{{old('password')}}" type="password" name="password" class="form-control" placeholder="password">
+                      @if($errors->has('password'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('password')}} </div>
+                      @endif
+                  </div>
+
+                  <div class="form-group-inner mb-3">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="exampleInputFile">
-                      <label class="custom-file-label" for="exampleInputFile">Pilih File Foto Anggota</label>
+                      <input value="{{old('foto_ktp')}}" name="foto_ktp" type="file" class="custom-file-input" id="exampleInputFile">
+                      <label class="custom-file-label" for="exampleInputFile">Pilih File Foto KTP</label>
                     </div>
+                      @if($errors->has('foto_ktp'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('foto_ktp')}} </div>
+                      @endif
                   </div>
 
+                  <div class="form-group-inner mb-3">
+                    <input type="submit" class="btn btn-primary" style="width: 200px" value="SIMPAN">
+                  </div>
+
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group-inner mb-3">
+                      <input value="{{old('telepon')}}" name="telepon" type="text" class="form-control" placeholder="Telepon">
+                      @if($errors->has('telepon'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('telepon')}} </div>
+                      @endif
+                    </div>
+
+                    <div class="form-group-inner mb-3">
+                      <input value="{{old('nomor_ktp')}}" name="nomor_ktp" type="text" class="form-control" placeholder="Nomor KTP">
+                      @if($errors->has('nomor_ktp'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('nomor_ktp')}} </div>
+                      @endif
+                    </div>
+
+                    <div class="form-group-inner mb-3">
+                      <div class="custom-file">
+                        <input value="{{old('foto')}}" name="foto" type="file" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Pilih File Foto Anggota</label>
+                      </div>
+                      @if($errors->has('foto'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('foto')}} </div>
+                      @endif
+                    </div>
+
+                  </div>
+                  <!-- /.col -->
                 </div>
-                <!-- /.col -->
               </div>
-            </div>
+            </form>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->

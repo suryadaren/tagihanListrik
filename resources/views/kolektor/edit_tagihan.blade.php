@@ -25,41 +25,48 @@
             <!-- /.card-header -->
             <div class="card-body">
 
-              <div class="row">
-                <div class="col-md-6">
-
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Jumlah Tagihan">
-                </div>
-
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                  </div>
-                  <input type="date" class="form-control date" placeholder="Waktu Tenggat Pembayaran">
-                </div>
-
-                </div>
-                <!-- /.col -->
-                <div class="col-md-6">
+              <form action="/kolektor/tagihan/update_tagihan/{{$tagihan->id}}" method="post">
+                {{csrf_field()}}
+                {{@method_field('put')}}
+                <div class="row">
+                  <div class="col-md-6">
 
                   <div class="input-group mb-3">
+                    <label>Jumlah Tagihan : </label>
                     <div class="input-group-prepend">
-                      <span class="input-group-text">$</span>
+                      <span class="input-group-text">Rp</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Jumlah Dibayar">
+                    <input type="text" id="jumlah_tagihan" name="jumlah_tagihan" class="form-control" placeholder="Jumlah Tagihan" value="{{$tagihan->jumlah_tagihan}}">
                   </div>
 
                   <div class="input-group mb-3">
-                    <input type="submit" class="btn btn-primary" style="width: 200px" value="Simpan">
+                    <label>Waktu Tenggat :</label>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <input type="date" class="form-control date" placeholder="Waktu Tenggat Pembayaran" name="waktu_tenggat_pembayaran" value="{{$tagihan->waktu_tenggat_pembayaran}}">
                   </div>
 
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-6">
+
+                    <div class="input-group mb-3">
+                      <label>Jumlah Dibayar:</label>
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
+                      <input type="text" id="jumlah_dibayar" name="jumlah_dibayar" class="form-control" placeholder="Jumlah Dibayar" value="{{$tagihan->jumlah_dibayar}}">
+                    </div>
+
+                    <div class="input-group mb-3">
+                      <input type="submit" class="btn btn-primary" style="width: 200px" value="Simpan">
+                    </div>
+
+                  </div>
+                  <!-- /.col -->
                 </div>
-                <!-- /.col -->
-              </div>
+              </form>
             </div>
             <!-- /.card-body -->
           </div>
@@ -71,96 +78,61 @@
     </section>
     <!-- /.content -->
 
+    <script type="text/javascript">
+    
+    var rupiah = document.getElementById('jumlah_tagihan');
+    rupiah.addEventListener('keyup', function(e){
+      // tambahkan 'Rp.' pada saat form di ketik
+      // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+      rupiah.value = formatRupiah(this.value, '');
+    });
+ 
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix){
+      var number_string = angka.replace(/[^,\d]/g, '').toString(),
+      split       = number_string.split(','),
+      sisa        = split[0].length % 3,
+      rupiah        = split[0].substr(0, sisa),
+      ribuan        = split[0].substr(sisa).match(/\d{3}/gi);
+ 
+      // tambahkan titik jika yang di input sudah menjadi angka ribuan
+      if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+      }
+ 
+      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+      return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+    }
+  </script>
 
 
-
-    <!-- modal lihat -->
-      <div class="modal fade" id="lihat">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-info">
-                <h3 class="widget-user-username" id="nama">Alexander Pierce</h3>
-                <h5 class="widget-user-desc">Founder & CEO</h5>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" id="foto" src="/lte/dist/img/user1-128x128.jpg" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="callout callout-info">
-                      <h5>Jumlah Tagihan</h5>
-                      <p style="font-size: 12px" id="jumlah_tagihan">Rp. 25.000.000,-</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="callout callout-info">
-                      <h5>Jumlah dibayar</h5>
-                      <p style="font-size: 12px" id="jumlah_dibayar">Rp. 20.000.000,-</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="callout callout-info">
-                      <h5>Waktu Tenggat</h5>
-                      <p style="font-size: 12px" id="waktu_tenggat">26 Feb 2020</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="callout callout-danger">
-                      <h5>Status</h5>
-                      <p style="font-size: 12px" id="statu">belum lunas</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-
-
-      <!-- modal hapus -->
-      <div class="modal fade" id="hapus">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Hapus Data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Apakah Anda yakin ingin menghapus data ini ?</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
-                <input type="hidden" name="id">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <input type="submit" value="Ya" class="btn btn-primary">
-              </form>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-
-
-<script>
-  function lihat(nama,foto,jumlah_tagihan,jumlah_dibayar,waktu_tenggat,status){
-    $('#lihat').modal();
-  }
-  function hapus(id){
-    $('#hapus').modal();
-  }
-</script>
-
+    <script type="text/javascript">
+    
+    var rupiahB = document.getElementById('jumlah_dibayar');
+    rupiahB.addEventListener('keyup', function(e){
+      // tambahkan 'Rp.' pada saat form di ketik
+      // gunakan fungsi formatRupiahB() untuk mengubah angka yang di ketik menjadi format angka
+      rupiahB.value = formatRupiahB(this.value, '');
+    });
+ 
+    /* Fungsi formatRupiahB */
+    function formatRupiahB(angka, prefix){
+      var number_string = angka.replace(/[^,\d]/g, '').toString(),
+      split       = number_string.split(','),
+      sisa        = split[0].length % 3,
+      rupiahB        = split[0].substr(0, sisa),
+      ribuan        = split[0].substr(sisa).match(/\d{3}/gi);
+ 
+      // tambahkan titik jika yang di input sudah menjadi angka ribuan
+      if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiahB += separator + ribuan.join('.');
+      }
+ 
+      rupiahB = split[1] != undefined ? rupiahB + ',' + split[1] : rupiahB;
+      return prefix == undefined ? rupiahB : (rupiahB ? '' + rupiahB : '');
+    }
+  </script>
+  
 @stop

@@ -19,4 +19,12 @@ class anggota_kolektor extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function tagihans(){
+    	return $this->hasOne(tagihan_anggota_kolektor::class);
+    }
+
+    public function pembayarans(){
+    	return $this->hasMany(pembayaran_anggota_kolektor::class);
+    }
 }

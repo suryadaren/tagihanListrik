@@ -34,25 +34,23 @@
                   <th>Nama</th>
                   <th>Email</th>
                   <th>No. Hp</th>
-                  <th>Region</th>
-                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td>4</td>
-                  <th>Region</th>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <a class="btn btn-primary" onclick="lihat('email', 'nama', 'foto', 'telepon', 'nomor_ktp', 'region')"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a class="btn btn-danger" onclick="hapus('id')"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                    <a href="/kolektor/anggota/edit/1" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
-                  </td>
-                </tr>
+                  @foreach($anggotas as $anggota)
+                    <tr>
+                      <td>{{$anggota->nomor_ktp}}</td>
+                      <td>{{$anggota->nama}}</td>
+                      <td>{{$anggota->email}}</td>
+                      <td>{{$anggota->telepon}}</td>
+                      <td>
+                        <a class="btn btn-primary" onclick="lihat('{{$anggota->email}}', '{{$anggota->nama}}', '{{Storage::url($anggota->foto)}}', '{{$anggota->telepon}}', '{{$anggota->nomor_ktp}}', '{{Storage::url($anggota->foto_ktp)}}')"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                        <a class="btn btn-danger" onclick="hapus('{{$anggota->id}}')"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                        <a href="/kolektor/anggota/edit/{{$anggota->id}}" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
+                      </td>
+                    </tr>
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -109,6 +107,13 @@
                     </div>
                   </div>
                 </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <div class="callout callout-info">
+                      <img src="" id="foto_ktp" alt="foto_ktp" width="200px">
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -133,7 +138,8 @@
               <p>Apakah Anda yakin ingin menghapus data kolektor ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
+              <form name="form_hapus" action="/kolektor/hapus_anggota" method="post">
+                {{csrf_field()}}
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -148,10 +154,17 @@
 
 
 <script>
-  function lihat(email, nama, foto, telepon, nomor_ktp, region){
+  function lihat(email, nama, foto, telepon, nomor_ktp, foto_ktp){
+    $('#email').text(email);
+    $('#nama').text(nama);
+    $('#telepon').text(telepon);
+    $('#nomor_ktp').text(nomor_ktp);
+    $('#foto').attr('src',foto);
+    $('#foto_ktp').attr('src',foto_ktp);
     $('#lihat').modal();
   }
   function hapus(id){
+    document.forms['form_hapus']['id'].value=id;
     $('#hapus').modal();
   }
 </script>

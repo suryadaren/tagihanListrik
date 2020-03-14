@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1>Tagihan</h1>
+            <h1>Pembayaran</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -20,48 +20,39 @@
 
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Edit Data Tagihan</h3>
+              <h3 class="card-title">Masukan Data Pembayaran</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
 
-              <form action="/kolektor/tagihan/update_tagihan/{{$tagihan->id}}" method="post">
+              <form action="/kolektor/simpan_pembayaran" method="post" enctype="multipart/form-data">
                 {{csrf_field()}}
-                {{@method_field('put')}}
                 <div class="row">
                   <div class="col-md-6">
 
                   <div class="input-group mb-3">
-                    <label>Jumlah Tagihan : </label>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Rp</span>
-                    </div>
-                    <input type="text" id="jumlah_tagihan" name="jumlah_tagihan" class="form-control" placeholder="Jumlah Tagihan" value="{{$tagihan->jumlah_tagihan}}">
+                    <label>Jumlah Yang Dibayar : </label>
+                    <input type="text" id="jumlah_pembayaran" name="jumlah_pembayaran" class="form-control" placeholder="Jumlah yang Dibayar" value="{{old('jumlah_pembayaran')}}">
                   </div>
-
-                  <div class="input-group mb-3">
-                    <label>Waktu Tenggat :</label>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                    </div>
-                    <input type="date" class="form-control date" placeholder="Waktu Tenggat Pembayaran" name="waktu_tenggat_pembayaran" value="{{$tagihan->waktu_tenggat_pembayaran}}">
-                  </div>
-
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-md-6">
-
-                    <div class="input-group mb-3">
-                      <label>Jumlah Dibayar:</label>
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Rp</span>
-                      </div>
-                      <input type="text" id="jumlah_dibayar" name="jumlah_dibayar" class="form-control" placeholder="Jumlah Dibayar" value="{{$tagihan->jumlah_dibayar}}">
-                    </div>
+                      @if($errors->has('jumlah_pembayaran'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('jumlah_pembayaran')}} </div>
+                      @endif
 
                     <div class="input-group mb-3">
                       <input type="submit" class="btn btn-primary" style="width: 200px" value="Simpan">
                     </div>
+
+                  </div>
+                  <div class="col-md-6">
+
+
+                  <div class="input-group mb-3">
+                    <label>Bukti Transfer :</label>
+                    <input type="file" class="form-control file" name="bukti_pembayaran">
+                  </div>
+                      @if($errors->has('bukti_pembayaran'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('bukti_pembayaran')}} </div>
+                      @endif
 
                   </div>
                   <!-- /.col -->
@@ -80,7 +71,7 @@
 
     <script type="text/javascript">
     
-    var rupiah = document.getElementById('jumlah_tagihan');
+    var rupiah = document.getElementById('jumlah_pembayaran');
     rupiah.addEventListener('keyup', function(e){
       // tambahkan 'Rp.' pada saat form di ketik
       // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka

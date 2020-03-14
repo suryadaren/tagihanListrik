@@ -16,14 +16,60 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
+
         <div class="col-12">
 
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Daftar Data Pembayaran</h3>
+              <h3 class="card-title">Daftar Data Pembayaran Kolektor</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+              <div class="row">
+                
+                <div class="col-lg-4 col-6">
+                  <!-- small card -->
+                  <div class="small-box bg-info">
+                    <div class="inner">
+
+                      <p>Total Tagihan</p>
+                      <h3>Rp. {{$total_tagihan}},-</h3>
+                    </div>
+                    <div class="icon">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                  <!-- small card -->
+                  <div class="small-box bg-success">
+                    <div class="inner">
+
+                      <p>Total Telah Dibayar</p>
+                      <h3>Rp. {{$total_dibayar}},-</h3>
+                    </div>
+                    <div class="icon">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                  <!-- small card -->
+                  <div class="small-box bg-danger">
+                    <div class="inner">
+
+                      <p>Sisa Pembayaran</p>
+                      <h3>Rp. {{$sisa}},-</h3>
+                    </div>
+                    <div class="icon">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+              
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -36,18 +82,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Jakarta</td>
-                  <td>Rp. 1000.000,-</td>
-                  <td>12/12/2019</td>
-                  <td><span class="badge badge-success">Verifikasi</span></td>
-                  <td>
-                    <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                    <a onclick="setujui('id')" class="btn btn-success"><abbr title="Verifikasi"><i class="fa fa-check"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($pembayarans as $pembayaran)
+                  <tr>
+                    <td>{{$pembayaran->kolektor->nama}}</td>
+                    <td>{{$pembayaran->kolektor->region}}</td>
+                    <td>Rp. {{$pembayaran->jumlah_pembayaran}},-</td>
+                    <td>{{$pembayaran->created_at}}</td>
+                    <td>
+                      @if($pembayaran->status_pembayaran == "verifikasi")
+                      <span class="badge badge-success">Verifikasi</span>
+                      @elseif($pembayaran->status_pembayaran == "menunggu verifikasi")
+                      <span class="badge badge-warning">Menunggu Verifikasi</span>
+                      @else
+                      <span class="badge badge-danger">ditolak</span>
+                      @endif
+                    </td>
+                    <td>
+                      <a onclick="lihat('{{$pembayaran->kolektor->nama}}','{{Storage::url($pembayaran->kolektor->foto)}}','{{$pembayaran->jumlah_pembayaran}}','{{$pembayaran->created_at}}')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+
+                      @if($pembayaran->status_pembayaran == "menunggu verifikasi")
+                      <a onclick="setujui('{{$pembayaran->id}}')" class="btn btn-success"><abbr title="Verifikasi"><i class="fa fa-check"></i> </abbr></a>
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -114,7 +172,7 @@
               <p>Apakah Anda yakin ingin menghapus data pembayaran ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
+              <form name="form_hapus" method="post" action="/admin/hapus_pembayaran">
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -143,7 +201,8 @@
               <p>Apakah Anda yakin ingin menyetujui pembayaran ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/setujui">
+              <form name="form_setujui" action="/admin/setujui_pembayaran" method="post">
+                {{csrf_field()}}
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -158,12 +217,18 @@
 
 <script>
   function lihat(nama, foto, jumlah_pembayaran, tanggal_pembayaran){
+    $('#nama').text(nama);
+    $('#jumlah_pembayaran').text(jumlah_pembayaran);
+    $('#tanggal_pembayaran').text(tanggal_pembayaran);
+    $('#foto').attr('src',foto);
     $('#lihat').modal();
   }
   function hapus(id){
+    document.forms['form_hapus']['id'].value=id;
     $('#hapus').modal();
   }
   function setujui(id){
+    document.forms['form_setujui']['id'].value=id;
     $('#setujui').modal();
   }
 </script>

@@ -15,4 +15,9 @@ class pembayaran_kolektor extends Authenticatable
     protected $fillable = [
         'kolektor_id', 'jumlah_pembayaran', 'bukti_pembayaran', 'status_pembayaran', 'created_at', 'updated_at'
     ];
+    
+
+    public function kolektor(){
+    	return $this->belongsTo(kolektor::class,"kolektor_id");
+    }
 }

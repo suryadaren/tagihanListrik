@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\notifikasi;
 use App\kolektor;
 use App\tagihan_kolektor;
+use App\pembayaran_kolektor;
 use Carbon\Carbon;
 
 class adminController extends Controller
@@ -111,14 +112,71 @@ class adminController extends Controller
             "message" => "Berhasil mengupdate tagihan kolektor",
             "alert-type" => "success",
         ];
-        return redirect(url('admin/tagihan'));
+        return redirect(url('admin/tagihan'))->with($notif);
     }
     
     public function pembayaran(){
-    	return view('admin.pembayaran');
+        $tagihans = tagihan_kolektor::get();
+        $total_tagihan = 0;
+        $total_dibayar = 0;
+        $sisa = 0;
+        foreach ($tagihans as $tagihan) {
+            $jumlah_tagihan = str_replace(".", "", $tagihan->jumlah_tagihan);
+            $jumlah_dibayar = str_replace(".", "", $tagihan->jumlah_dibayar);
+
+            $total_tagihan += $jumlah_tagihan;
+            $total_dibayar += $jumlah_dibayar;
+        }
+        $sisa = $total_tagihan-$total_dibayar;
+        $total_tagihan = $this->convert_to_rupiah($total_tagihan);
+        $total_dibayar = $this->convert_to_rupiah($total_dibayar);
+        $sisa = $this->convert_to_rupiah($sisa);
+
+        $pembayarans = pembayaran_kolektor::orderby('created_at','desc')->get();
+
+    	return view('admin.pembayaran',compact('pembayarans','total_tagihan','total_dibayar','sisa'));
+    }
+    
+    public function setujui_pembayaran(Request $request){
+        $pembayaran = pembayaran_kolektor::find($request->id);
+        $pembayaran->status_pembayaran = "verifikasi";
+        $pembayaran->save();
+
+        $tagihan = tagihan_kolektor::where('kolektor_id',$pembayaran->kolektor_id)->first();
+
+        $jumlah_dibayar = str_replace(".", "", $pembayaran->jumlah_pembayaran);
+        $jumlah_sebelum = str_replace(".", "", $tagihan->jumlah_dibayar);
+
+        $jumlah_pembayaran_terbaru = $jumlah_dibayar+$jumlah_sebelum;
+        $jumlah_pembayaran_terbaru = $this->convert_to_rupiah($jumlah_pembayaran_terbaru);
+
+        $tagihan->jumlah_dibayar = $jumlah_pembayaran_terbaru;
+        $tagihan->save();
+
+        $data_notif = [
+                "pengirim" => "admin",
+                "penerima" => $pembayaran->kolektor_id,
+                "kategori" => "verifikasi pembayaran",
+                "id_kategori" => $pembayaran->id, 
+                "deskripsi" => "pembayaran anda telah diverifikasi", 
+                "status" => "belum dibaca" 
+            ];
+        notifikasi::create($data_notif);
+
+
+        $notif = [
+            "message" => "Berhasil memverifikasi pembayaran kolektor",
+            "alert-type" => "success",
+        ];
+        return back()->with($notif);
+        
     }
     
     public function laporan(){
     	return view('admin.laporan');
+    }
+    function convert_to_rupiah($angka){
+        $hasil_rupiah = number_format($angka,0,',','.');
+        return $hasil_rupiah;
     }
 }

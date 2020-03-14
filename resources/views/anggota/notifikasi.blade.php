@@ -34,15 +34,33 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>26 Nov 2019</td>
-                  <td>Pembayaran Tagihan</td>
-                  <td>
-                    <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($notifikasis as $notif)
+                @if($notif->status == "belum dibaca")
+                  <tr style="background-color: #f4f6f9">
+                    <td>
+                      Kolektor
+                    </td>
+                    <td>{{$notif->created_at}}</td>
+                    <td>{{$notif->deskripsi}}</td>
+                    <td>
+                      <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                    </td>
+                  </tr>
+                @else
+                  <tr style="background-color: white">
+                    <td>
+                      Kolektor
+                    </td>
+                    <td>{{$notif->created_at}}</td>
+                    <td>{{$notif->deskripsi}}</td>
+                    <td>
+                      <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                    </td>
+                  </tr>
+                @endif
+                @endforeach
                 </tbody>
               </table>
             </div>

@@ -32,7 +32,7 @@
                     <div class="inner">
 
                       <p>Total Tagihan</p>
-                      <h3>Rp. 20.000.000,-</h3>
+                      <h3>Rp. {{$tagihan->jumlah_tagihan}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -45,7 +45,7 @@
                     <div class="inner">
 
                       <p>Total Telah Dibayar</p>
-                      <h3>Rp. 15.000.000,-</h3>
+                      <h3>Rp. {{$tagihan->jumlah_dibayar}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -58,7 +58,7 @@
                     <div class="inner">
 
                       <p>Sisa Pembayaran</p>
-                      <h3>Rp. 5.000.000,-</h3>
+                      <h3>Rp. {{$sisa_tagihan}},-</h3>
                     </div>
                     <div class="icon">
                       <i class="fas fa-shopping-cart"></i>
@@ -68,24 +68,36 @@
 
 
               </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <a href="/anggota/lakukan_pembayaran" class="btn btn-warning">Lakukan Pembayaran</a>
+                </div>
+                <br><br>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Jumlah Pembayaran</th>
                   <th>Tanggal Pembayaran</th>
                   <th>Status</th>
-                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Rp. 1000.000,-</td>
-                  <td>12/12/2019</td>
-                  <td><span class="badge badge-success">Verifikasi</span></td>
-                  <td>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($pembayarans as $pembayaran)
+                  <tr>
+                    <td>{{$pembayaran->jumlah_pembayaran}}</td>
+                    <td>{{$tagihan->created_at}}</td>
+                    <td>
+                      @if($pembayaran->status_pembayaran == "verifikasi")
+                      <span class="badge badge-success">Verifikasi</span>
+                      @elseif($pembayaran->status_pembayaran == "menunggu verifikasi")
+                      <span class="badge badge-warning">Menunggu Verifikasi</span>
+                      @else
+                      <span class="badge badge-danger">ditolak</span>
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
                 </tbody>
               </table>
             </div>

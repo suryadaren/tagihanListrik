@@ -15,4 +15,8 @@ class tagihan_anggota_kolektor extends Authenticatable
     protected $fillable = [
         'anggota_kolektor_id', 'jumlah_tagihan', 'jumlah_dibayar', 'waktu_tenggat_pembayaran', 'status_tagihan', 'created_at', 'updated_at'
     ];
+
+    public function anggota_kolektor(){
+    	return $this->belongsTo(anggota_kolektor::class,"anggota_kolektor_id");
+    }
 }

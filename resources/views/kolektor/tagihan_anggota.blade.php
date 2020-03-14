@@ -27,8 +27,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Kolektor</th>
-                  <th>Region</th>
+                  <th>Nama Anggota</th>
                   <th>Jumlah Tagihan</th>
                   <th>Jumlah Dibayar</th>
                   <th>Tanggal Tenggat</th>
@@ -37,19 +36,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Jakarta</td>
-                  <td>Rp. 1000.000,-</td>
-                  <td>Rp. 500.000,-</td>
-                  <td>12/12/2019</td>
-                  <td><span class="badge badge-success">Lunas</span></td>
-                  <td class="center">
-                    <a onclick="lihat('nama','foto','jumlah_tagihan','jumlah_dibayar','waktu_tenggat','status')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                    <a href="/kolektor/tagihan/edit_tagihan/1" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
-                    <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
-                  </td>
-                </tr>
+                @foreach($tagihans as $tagihan)
+                  <tr>
+                    <td>{{$tagihan->anggota_kolektor->nama}}</td>
+                    <td>Rp. {{$tagihan->jumlah_tagihan}},-</td>
+                    <td>Rp. {{$tagihan->jumlah_dibayar}},-</td>
+                    <td>{{$tagihan->waktu_tenggat_pembayaran}}</td>
+                      @if($tagihan->status_tagihan == "lunas")
+                      <td><span class="badge badge-success">{{$tagihan->status_tagihan}}</span></td>
+                      @elseif($tagihan->status_tagihan == "belum lunas")
+                      <td><span class="badge badge-danger">{{$tagihan->status_tagihan}}</span></td>
+                      @else
+                      <td><span class="badge badge-warning">{{$tagihan->status_tagihan}}</span></td>
+                      @endif
+                    <td class="center">
+                      <a onclick="lihat('{{$tagihan->nama}}','{{Storage::url($tagihan->anggota_kolektor->foto)}}','{{$tagihan->jumlah_tagihan}}','{{$tagihan->jumlah_dibayar}}','{{$tagihan->waktu_tenggat_pembayaran}}','{{$tagihan->status}}')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a href="/kolektor/tagihan/edit_tagihan/{{$tagihan->id}}" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
+                    </td>
+                  </tr>
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -148,6 +153,12 @@
 
 <script>
   function lihat(nama,foto,jumlah_tagihan,jumlah_dibayar,waktu_tenggat,status){
+    $('#nama').text(nama);
+    $('#jumlah_tagihan').text('Rp. '+jumlah_tagihan+',-');
+    $('#jumlah_dibayar').text('Rp. '+jumlah_dibayar+',-');
+    $('#waktu_tenggat').text(waktu_tenggat);
+    $('#status').text(status);
+    $('#foto').attr('src',foto);
     $('#lihat').modal();
   }
   function hapus(id){

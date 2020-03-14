@@ -32,6 +32,12 @@ class homeController extends Controller
                 "alert-type" => "success"
             ];
             return redirect(url('admin'))->with($notif);
+        }if(auth()->guard('anggota_kolektor')->attempt(array('email' => $request->email, 'password' => $request->password))){
+            $notif = [
+                "message" => "Selamat datang ".auth()->guard('anggota_kolektor')->user()->nama,
+                "alert-type" => "success"
+            ];
+            return redirect(url('/anggota'))->with($notif);
         }else{
             $notif = [
                 "message" => "Email/Password yang anda masukan salah",
