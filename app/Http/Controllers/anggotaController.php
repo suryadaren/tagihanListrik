@@ -39,11 +39,17 @@ class anggotaController extends Controller
     public function simpan_pembayaran(Request $request){
         $validator = Validator::make($request->all(),[
             'jumlah_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required'
+            'bukti_pembayaran' => 'required',
+            'nama_bank' => 'required',
+            'nomor_rekening' => 'required',
+            'nama_pemilik' => 'required',
         ],
         [
             'jumlah_pembayaran.required' => 'jumlah pembayaran tidak boleh kosong',
-            'bukti_pembayaran.required' => 'bukti pembayaran tidak boleh kosong'
+            'bukti_pembayaran.required' => 'bukti pembayaran tidak boleh kosong',
+            'nama_bank.required' => 'nama bank tidak boleh kosong',
+            'nomor_rekening.required' => 'nomor rekening tidak boleh kosong',
+            'nama_pemilik.required' => 'nama pemilik rekening tidak boleh kosong',
         ]);
          if ($validator->fails()) {
             return back()
@@ -55,6 +61,9 @@ class anggotaController extends Controller
                 "anggota_kolektor_id" => auth()->guard('anggota_kolektor')->id(),
                 "jumlah_pembayaran" => $request->jumlah_pembayaran,
                 "bukti_pembayaran" => $buktiPembayaranPath,
+                "nama_bank" => $request->nama_bank,
+                "nomor_rekening" => $request->nomor_rekening,
+                "nama_pemilik" => $request->nama_pemilik,
                 "status_pembayaran" => "menunggu verifikasi"
             ];
             $pembayaran = pembayaran_anggota_kolektor::create($data);
@@ -64,7 +73,7 @@ class anggotaController extends Controller
                 "penerima" => auth()->guard('anggota_kolektor')->user()->kolektor_id,
                 "kategori" => "pembayaran tagihan",
                 "id_kategori" => $pembayaran->id, 
-                "deskripsi" => auth()->guard('anggota_kolektor')->user()->name." telah melakukan pembayaran tagihan", 
+                "deskripsi" => auth()->guard('anggota_kolektor')->user()->nama." telah melakukan pembayaran tagihan", 
                 "status" => "belum dibaca" 
             ];
             notifikasi::create($data_notif);

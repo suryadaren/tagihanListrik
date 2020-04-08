@@ -30,12 +30,29 @@
                 <div class="row">
                   <div class="col-md-6">
 
+                    <div class="input-group mb-3">
+                      <input type="text" id="jumlah_pembayaran" name="jumlah_pembayaran" class="form-control" placeholder="Jumlah yang Dibayar (Rp)" value="{{old('jumlah_pembayaran')}}">
+                    </div>
+                    @if($errors->has('jumlah_pembayaran'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('jumlah_pembayaran')}} 
+                      </div>
+                    @endif
+
+                    <div class="input-group mb-3">
+                      <input type="text" id="nama_bank" name="nama_bank" class="form-control" placeholder="Nama Bank Pengirimnan" value="{{old('nama_bank')}}">
+                    </div>
+                    @if($errors->has('nama_bank'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('nama_bank')}} 
+                      </div>
+                    @endif
+
+
                   <div class="input-group mb-3">
-                    <label>Jumlah Yang Dibayar : </label>
-                    <input type="text" id="jumlah_pembayaran" name="jumlah_pembayaran" class="form-control" placeholder="Jumlah yang Dibayar" value="{{old('jumlah_pembayaran')}}">
+                    <input type="file"class="custom-file-input" id="exampleInputFile" name="bukti_pembayaran">
+                      <label class="custom-file-label" for="exampleInputFile">Bukti Pembayaran</label>
                   </div>
-                      @if($errors->has('jumlah_pembayaran'))
-                        <div class="alert alert-danger" role="alert"> {{$errors->first('jumlah_pembayaran')}} </div>
+                      @if($errors->has('bukti_pembayaran'))
+                        <div class="alert alert-danger" role="alert"> {{$errors->first('bukti_pembayaran')}} </div>
                       @endif
 
                     <div class="input-group mb-3">
@@ -45,14 +62,21 @@
                   </div>
                   <div class="col-md-6">
 
+                    <div class="input-group mb-3">
+                      <input type="text" id="nama_pemilik" name="nama_pemilik" class="form-control" placeholder="Nama Pemilik Rekening" value="{{old('nama_pemilik')}}">
+                    </div>
+                    @if($errors->has('nama_pemilik'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('nama_pemilik')}} 
+                      </div>
+                    @endif
 
-                  <div class="input-group mb-3">
-                    <label>Bukti Transfer :</label>
-                    <input type="file" class="form-control file" name="bukti_pembayaran">
-                  </div>
-                      @if($errors->has('bukti_pembayaran'))
-                        <div class="alert alert-danger" role="alert"> {{$errors->first('bukti_pembayaran')}} </div>
-                      @endif
+                    <div class="input-group mb-3">
+                      <input type="text" id="nomor_rekening" name="nomor_rekening" class="form-control" placeholder="Nomor Rekening" value="{{old('nomor_rekening')}}">
+                    </div>
+                    @if($errors->has('nomor_rekening'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('nomor_rekening')}} 
+                      </div>
+                    @endif
 
                   </div>
                   <!-- /.col -->

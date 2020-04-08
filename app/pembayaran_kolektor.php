@@ -13,7 +13,7 @@ class pembayaran_kolektor extends Authenticatable
     protected $table = 'pembayaran_kolektor';
 
     protected $fillable = [
-        'kolektor_id', 'jumlah_pembayaran', 'bukti_pembayaran', 'status_pembayaran', 'created_at', 'updated_at'
+        'kolektor_id', 'jumlah_pembayaran', 'nama_bank', 'nomor_rekening', 'nama_pemilik', 'bukti_pembayaran', 'status_pembayaran', 'created_at', 'updated_at'
     ];
     
 

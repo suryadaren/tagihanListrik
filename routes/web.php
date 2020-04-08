@@ -24,6 +24,8 @@ Route::group(['prefix' => 'admin'], function(){
 
 	Route::get('/laporan', 'adminController@laporan');
 
+	Route::get('/logout', 'adminController@logout');
+
 });
 
 

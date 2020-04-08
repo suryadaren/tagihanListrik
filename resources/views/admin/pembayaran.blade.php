@@ -98,7 +98,7 @@
                       @endif
                     </td>
                     <td>
-                      <a onclick="lihat('{{$pembayaran->kolektor->nama}}','{{Storage::url($pembayaran->kolektor->foto)}}','{{$pembayaran->jumlah_pembayaran}}','{{$pembayaran->created_at}}')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a onclick="lihat('{{$pembayaran->kolektor->nama}}','{{Storage::url($pembayaran->kolektor->foto)}}','{{$pembayaran->jumlah_pembayaran}}','{{$pembayaran->created_at}}','{{$pembayaran->nama_bank}}','{{$pembayaran->nomor_rekening}}','{{$pembayaran->nama_pemilik}}','{{Storage::url($pembayaran->bukti_pembayaran)}}')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
 
                       @if($pembayaran->status_pembayaran == "menunggu verifikasi")
                       <a onclick="setujui('{{$pembayaran->id}}')" class="btn btn-success"><abbr title="Verifikasi"><i class="fa fa-check"></i> </abbr></a>
@@ -146,6 +146,37 @@
                       <h5>Tanggal Pembayaran</h5>
                       <p style="font-size: 12px" id="tanggal_pembayaran">20 Nov 2019</p>
                     </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="callout callout-info">
+                      <h5>Nama Bank</h5>
+                      <p style="font-size: 12px" id="nama_bank">Mandiri</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="callout callout-info">
+                      <h5>Nomor rekening</h5>
+                      <p style="font-size: 12px" id="nomor_rekening">1209121821</p>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-6">
+                    <div class="callout callout-info">
+                      <h5>Nama Pemilik</h5>
+                      <p style="font-size: 12px" id="nama_pemilik">Kolektor</p>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-12">
+                    <div class="callout callout-info">
+                      <h5>Bukti Transfer</h5>
+                      <img src="" id="bukti_pembayaran" alt="bukti_pembayaran" width="200px">
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -216,11 +247,15 @@
       <!-- /.modal -->
 
 <script>
-  function lihat(nama, foto, jumlah_pembayaran, tanggal_pembayaran){
+  function lihat(nama, foto, jumlah_pembayaran, tanggal_pembayaran, nama_bank, nomor_rekening, nama_pemilik, bukti_pembayaran){
     $('#nama').text(nama);
     $('#jumlah_pembayaran').text(jumlah_pembayaran);
     $('#tanggal_pembayaran').text(tanggal_pembayaran);
+    $('#nama_bank').text(nama_bank);
+    $('#nomor_rekening').text(nomor_rekening);
+    $('#nama_pemilik').text(nama_pemilik);
     $('#foto').attr('src',foto);
+    $('#bukti_pembayaran').attr('src',bukti_pembayaran);
     $('#lihat').modal();
   }
   function hapus(id){
