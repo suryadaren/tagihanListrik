@@ -11,6 +11,7 @@ use App\tagihan_kolektor;
 use App\pembayaran_kolektor;
 use App\pembayaran_anggota_kolektor;
 use Carbon\Carbon;
+use PDF;
 
 class kolektorController extends Controller
 {
@@ -333,6 +334,14 @@ class kolektorController extends Controller
     
     public function laporan(){
     	return view('kolektor.laporan');
+    }
+    
+    public function download_laporan(){
+        $now = Carbon::now();
+        $pembayarans = pembayaran_anggota_kolektor::where('status_pembayaran','verifikasi')->orderBy('created_at','desc')->get();
+
+        $pdf = PDF::loadview('kolektor.berkas_laporan', ['pembayarans' => $pembayarans]);
+        return $pdf->download('Laporan Pembayaran '.$now);
     }
     
     public function logout(){

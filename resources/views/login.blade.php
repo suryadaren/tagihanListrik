@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Tagihan Listrik | Anggota Kolektor Pages</title>
+  <title>Tagihan Listrik | Login Pages</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="/lte/dist/img/icon.png" type="image/x-icon">
@@ -24,6 +24,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
+    <img src="{{asset('lte/dist/img/griya.png')}}" alt="logo" style="width: 50px">
     <h1>Login</h1>
   </div>
   <!-- /.login-logo -->

@@ -8,6 +8,7 @@ use App\kolektor;
 use App\tagihan_kolektor;
 use App\pembayaran_kolektor;
 use Carbon\Carbon;
+use PDF;
 
 class adminController extends Controller
 {
@@ -175,6 +176,15 @@ class adminController extends Controller
     public function laporan(){
     	return view('admin.laporan');
     }
+    
+    public function download_laporan(){
+        $now = Carbon::now();
+        $pembayarans = pembayaran_kolektor::where('status_pembayaran','verifikasi')->orderBy('created_at','desc')->get();
+
+        $pdf = PDF::loadview('admin.berkas_laporan', ['pembayarans' => $pembayarans]);
+        return $pdf->download('Laporan Pembayaran '.$now);
+    }
+
     function convert_to_rupiah($angka){
         $hasil_rupiah = number_format($angka,0,',','.');
         return $hasil_rupiah;

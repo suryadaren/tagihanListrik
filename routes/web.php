@@ -23,6 +23,7 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::post('/setujui_pembayaran', 'adminController@setujui_pembayaran');
 
 	Route::get('/laporan', 'adminController@laporan');
+	Route::get('/download_laporan', 'adminController@download_laporan');
 
 	Route::get('/logout', 'adminController@logout');
 
@@ -55,6 +56,7 @@ Route::group(['prefix' => 'kolektor'], function(){
 	Route::post('/simpan_pembayaran', 'kolektorController@simpan_pembayaran');
 
 	Route::get('/laporan', 'kolektorController@laporan');
+	Route::get('/download_laporan', 'kolektorController@download_laporan');
 
 	Route::get('/logout', 'kolektorController@logout');
 

@@ -86,6 +86,14 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
+            <a href="/kolektor/laporan" class="nav-link {{ (request()->is('kolektor/laporan*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+                Laporan
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
             <a href="/kolektor/logout" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
