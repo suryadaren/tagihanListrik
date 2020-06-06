@@ -14,7 +14,11 @@ class adminController extends Controller
 {
 
     public function notifikasi(){
+
+        // ngambil data notifikasi dan di simpan di variable notifikasis
         $notifikasis = notifikasi::where('penerima','admin')->orderBy('created_at','desc')->get();
+
+        // pergi ke view
         return view('admin.notifikasi',compact('notifikasis'));
     }
 
