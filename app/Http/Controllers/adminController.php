@@ -169,12 +169,48 @@ class adminController extends Controller
         notifikasi::create($data_notif);
 
 
+        // mengirim SMS kepada kolektor
+        
+        $userkey = '89d1e48ea650';
+        $passkey = '54n8uwx3mm';
+        $telepon = $pembayaran->kolektor->telepon;
+        $message = 'Pembayaran tagihan listrik anda sebesar Rp. '.$pembayaran->jumlah_pembayaran.' telah berhasil dan diverifikasi oleh Admin Griya Bayar Respon';
+
+        // memanggil fungsi kirimSMS
+        $this->kirimSMS($userkey,$passkey,$telepon,$message);
+
         $notif = [
             "message" => "Berhasil memverifikasi pembayaran kolektor",
             "alert-type" => "success",
         ];
         return back()->with($notif);
         
+    }
+
+    // fungsi kirimSms
+    public function kirimSMS($userk,$passk,$tel,$mess){
+
+        $userkey = $userk;
+        $passkey = $passk;
+        $telepon = $tel;
+        $message = $mess;
+        $url = 'https://gsm.zenziva.net/api/sendsms/';
+        $curlHandle = curl_init();
+        curl_setopt($curlHandle, CURLOPT_URL, $url);
+        curl_setopt($curlHandle, CURLOPT_HEADER, 0);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT,30);
+        curl_setopt($curlHandle, CURLOPT_POST, 1);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, array(
+            'userkey' => $userkey,
+            'passkey' => $passkey,
+            'nohp' => $telepon,
+            'pesan' => $message
+        ));
+        $results = json_decode(curl_exec($curlHandle), true);
+        curl_close($curlHandle);  
     }
     
     public function laporan(){
