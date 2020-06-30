@@ -13,6 +13,6 @@ class notifikasi extends Authenticatable
     protected $table = 'notifikasi';
 
     protected $fillable = [
-        'pengirim', 'penerima', 'kategori', 'id_kategori', 'deskripsi', 'status', 'created_at', 'updated_at'
+        'pengirim', 'penerima', 'kategori', 'id_kategori', 'deskripsi', 'status', 'created_at', 'updated_at', 'level_penerima'
     ];
 }

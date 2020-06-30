@@ -39,10 +39,9 @@ Route::group(['prefix' => 'kolektor'], function(){
 	Route::get('/anggota', 'kolektorController@anggota');
 	Route::get('/tambah_anggota', 'kolektorController@tambah_anggota');
 	Route::post('/simpan_anggota', 'kolektorController@simpan_anggota');
+	Route::get('/anggota/edit/{id}', 'kolektorController@edit_anggota');
 	Route::put('/update_anggota', 'kolektorController@update_anggota');
 	Route::post('/hapus_anggota', 'kolektorController@hapus_anggota');
-	
-	Route::get('/anggota/edit/{id}', 'kolektorController@edit_anggota');
 	
 	Route::get('/tagihan_anggota', 'kolektorController@tagihan_anggota');
 	Route::get('/tagihan/edit_tagihan/{id}', 'kolektorController@edit_tagihan');
@@ -65,6 +64,8 @@ Route::group(['prefix' => 'kolektor'], function(){
 Route::group(['prefix' => 'anggota'], function(){
 
 	Route::get('/', 'anggotaController@notifikasi');
+	Route::get('/lihat_notifikasi/{id}', 'anggotaController@lihat_notifikasi');
+	Route::post('/hapus_notifikasi', 'anggotaController@hapus_notifikasi');
 
 	Route::get('/pembayaran', 'anggotaController@pembayaran');
 	Route::get('/lakukan_pembayaran', 'anggotaController@lakukan_pembayaran');

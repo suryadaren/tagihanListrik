@@ -45,7 +45,7 @@
                       <td>{{$anggota->email}}</td>
                       <td>{{$anggota->telepon}}</td>
                       <td>
-                        <a class="btn btn-primary" onclick="lihat('{{$anggota->email}}', '{{$anggota->nama}}', '{{Storage::url($anggota->foto)}}', '{{$anggota->telepon}}', '{{$anggota->nomor_ktp}}', '{{Storage::url($anggota->foto_ktp)}}')"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                        <a class="btn btn-primary" onclick="lihat('{{$anggota->email}}', '{{$anggota->nama}}', '{{Storage::url($anggota->foto)}}', '{{$anggota->telepon}}', '{{$anggota->region}}', '{{$anggota->nomor_ktp}}', '{{Storage::url($anggota->foto_ktp)}}')"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
                         <a class="btn btn-danger" onclick="hapus('{{$anggota->id}}')"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
                         <a href="/kolektor/anggota/edit/{{$anggota->id}}" class="btn btn-warning"><abbr title="Edit"><i class="fa fa-pencil-alt"></i> </abbr></a>
                       </td>
@@ -103,7 +103,7 @@
                   <div class="col-md-6">
                     <div class="callout callout-info">
                       <h5>Region</h5>
-                      <p style="font-size: 12px" id="jakarta">jakarta</p>
+                      <p style="font-size: 12px" id="region">jakarta</p>
                     </div>
                   </div>
                 </div>
@@ -154,10 +154,11 @@
 
 
 <script>
-  function lihat(email, nama, foto, telepon, nomor_ktp, foto_ktp){
+  function lihat(email, nama, foto, telepon, region, nomor_ktp, foto_ktp){
     $('#email').text(email);
     $('#nama').text(nama);
     $('#telepon').text(telepon);
+    $('#region').text(region);
     $('#nomor_ktp').text(nomor_ktp);
     $('#foto').attr('src',foto);
     $('#foto_ktp').attr('src',foto_ktp);

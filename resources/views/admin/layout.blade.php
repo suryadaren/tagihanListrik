@@ -49,7 +49,6 @@
               <i class="nav-icon fas fa-bell"></i>
               <p>
                 Notifikasi 
-                <span class="right badge badge-danger">3</span>
               </p>
             </a>
           </li>

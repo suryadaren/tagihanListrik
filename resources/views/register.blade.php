@@ -80,11 +80,10 @@
                   </div>
 
                   <div class="form-group-inner mb-3">
-                    <select name="region" class="form-control" value="{{old('region')}}">
-                      <option value="region">Region</option>
-                      <option value="malang">Malang</option>
-                      <option value="surabaya">Surabaya</option>
-                    </select>
+                    <input type="text" name="region" class="form-control" placeholder="region" value="{{old('region')}}">
+                    @if($errors->has('region'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('region')}} </div>
+                    @endif
                   </div>
 
                   <div class="form-group-inner mb-3">

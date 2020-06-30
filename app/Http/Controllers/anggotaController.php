@@ -16,8 +16,24 @@ class anggotaController extends Controller
     }
 
     public function notifikasi(){
-    	$notifikasis = notifikasi::where('penerima',auth()->guard('anggota_kolektor')->id())->get();
+    	$notifikasis = notifikasi::where('penerima',auth()->guard('anggota_kolektor')->id())->where('level_penerima','anggota')->get();
         return view('anggota.notifikasi', compact('notifikasis'));
+    }
+
+    public function lihat_notifikasi($id){
+        notifikasi::find($id)->update([
+            "status" => "sudah dibaca"
+        ]);
+        return redirect(url('anggota/pembayaran'));
+    }
+
+    public function hapus_notifikasi(Request $request){
+        notifikasi::find($request->id)->delete();
+        $notif = [
+            "message" => "Berhasil menghapus notifikasi",
+            "alert-type" => "success"
+        ];
+        return back()->with($notif);
     }
 
     public function pembayaran(){
@@ -72,6 +88,7 @@ class anggotaController extends Controller
                 "pengirim" => auth()->guard('anggota_kolektor')->id(),
                 "penerima" => auth()->guard('anggota_kolektor')->user()->kolektor_id,
                 "kategori" => "pembayaran tagihan",
+                "level_penerima" => "kolektor",
                 "id_kategori" => $pembayaran->id, 
                 "deskripsi" => auth()->guard('anggota_kolektor')->user()->nama." telah melakukan pembayaran tagihan", 
                 "status" => "belum dibaca" 

@@ -28,6 +28,11 @@ class adminController extends Controller
                 "status" => "sudah dibaca"
             ]);
             return redirect(url('admin/kolektor'));
+        }elseif ($kategori == "pembayaran tagihan") {
+            notifikasi::find($id)->update([
+                "status" => "sudah dibaca"
+            ]);
+            return redirect(url('admin/pembayaran'));
         }
     }
 
@@ -107,6 +112,7 @@ class adminController extends Controller
                 "pengirim" => "admin",
                 "penerima" => $tagihan->kolektor_id,
                 "kategori" => "update tagihan",
+                "level_penerima" => "kolektor",
                 "id_kategori" => $id, 
                 "deskripsi" => "tagihan telah diperbarui", 
                 "status" => "belum dibaca" 
@@ -162,6 +168,7 @@ class adminController extends Controller
                 "pengirim" => "admin",
                 "penerima" => $pembayaran->kolektor_id,
                 "kategori" => "verifikasi pembayaran",
+                "level_penerima" => "kolektor",
                 "id_kategori" => $pembayaran->id, 
                 "deskripsi" => "pembayaran anda telah diverifikasi", 
                 "status" => "belum dibaca" 

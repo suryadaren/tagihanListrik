@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1>Tagihan</h1>
+            <h1>Anggota Kolektor</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -20,49 +20,83 @@
 
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Edit Data Tagihan</h3>
+              <h3 class="card-title">Edit Data Anggota kolektor</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
 
-              <form action="/kolektor/tagihan/update_tagihan/{{$tagihan->id}}" method="post">
+              <form action="/kolektor/update_anggota" method="post" enctype="multipart/form-data">
                 {{csrf_field()}}
                 {{@method_field('put')}}
+                <input type="hidden" name="id" value="{{$anggota->id}}">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
 
-                  <div class="input-group mb-3">
-                    <label>Jumlah Tagihan : </label>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Rp</span>
-                    </div>
-                    <input type="text" id="jumlah_tagihan" name="jumlah_tagihan" class="form-control" placeholder="Jumlah Tagihan" value="{{$tagihan->jumlah_tagihan}}">
+                  <div class="form-group-inner mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{$anggota->email}}">
+                    @if($errors->has('email'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('email')}} </div>
+                    @endif
                   </div>
 
-                  <div class="input-group mb-3">
-                    <label>Waktu Tenggat :</label>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                  <div class="form-group-inner mb-3">
+                    <input type="text" name="nama" class="form-control" placeholder="Nama" value="{{$anggota->nama}}">
+                    @if($errors->has('nama'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('nama')}} </div>
+                    @endif
+                  </div>
+
+                  <div class="form-group-inner mb-3">
+                    <input type="text" name="nomor_ktp" class="form-control" placeholder="Nomor KTP" value="{{$anggota->nomor_ktp}}">
+                    @if($errors->has('nomor_ktp'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('nomor_ktp')}} </div>
+                    @endif
+                  </div>
+
+                  <div class="form-group-inner mb-3">
+                    <input type="text" name="telepon" class="form-control" placeholder="Telepon" value="{{$anggota->telepon}}">
+                    @if($errors->has('telepon'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('telepon')}} </div>
+                    @endif
+                  </div>
+
+                  <div class="form-group-inner mb-3">
+                    <input type="text" name="region" class="form-control" placeholder="region" value="{{$anggota->region}}">
+                    @if($errors->has('region'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('region')}} </div>
+                    @endif
+                  </div>
+
+
+                
+
+                  <div class="form-group-inner mb-3">
+                    <label>Kosongkan Data dibawah jika tidak diupdate</label>
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    @if($errors->has('password'))
+                      <div class="alert alert-danger" role="alert"> {{$errors->first('password')}} </div>
+                    @endif
+                  </div>
+
+                  <div class="form-group-inner mb-3">
+                    <div class="custom-file">
+                      <input type="file" name="foto" class="custom-file-input" id="exampleInputFile">
+                      <label class="custom-file-label" for="exampleInputFile">Pilih File Foto</label>
                     </div>
-                    <input type="date" class="form-control date" placeholder="Waktu Tenggat Pembayaran" name="waktu_tenggat_pembayaran" value="{{$tagihan->waktu_tenggat_pembayaran}}">
+                  </div>
+
+                  <div class="form-group-inner mb-3">
+                    <div class="custom-file">
+                      <input type="file" name="foto_ktp" class="custom-file-input" id="exampleInputFile">
+                      <label class="custom-file-label" for="exampleInputFile">Pilih File Foto KTP</label>
+                    </div>
                   </div>
 
                   </div>
-                  <!-- /.col -->
-                  <div class="col-md-6">
 
-                    <div class="input-group mb-3">
-                      <label>Jumlah Dibayar:</label>
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Rp</span>
-                      </div>
-                      <input type="text" id="jumlah_dibayar" name="jumlah_dibayar" class="form-control" placeholder="Jumlah Dibayar" value="{{$tagihan->jumlah_dibayar}}">
-                    </div>
 
-                    <div class="input-group mb-3">
-                      <input type="submit" class="btn btn-primary" style="width: 200px" value="Simpan">
-                    </div>
-
+                  <div class="col-md-12">
+                    <input type="submit" class="btn btn-primary" style="width: 100%" value="SIMPAN">
                   </div>
                   <!-- /.col -->
                 </div>
@@ -78,61 +112,6 @@
     </section>
     <!-- /.content -->
 
-    <script type="text/javascript">
     
-    var rupiah = document.getElementById('jumlah_tagihan');
-    rupiah.addEventListener('keyup', function(e){
-      // tambahkan 'Rp.' pada saat form di ketik
-      // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-      rupiah.value = formatRupiah(this.value, '');
-    });
- 
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix){
-      var number_string = angka.replace(/[^,\d]/g, '').toString(),
-      split       = number_string.split(','),
-      sisa        = split[0].length % 3,
-      rupiah        = split[0].substr(0, sisa),
-      ribuan        = split[0].substr(sisa).match(/\d{3}/gi);
- 
-      // tambahkan titik jika yang di input sudah menjadi angka ribuan
-      if(ribuan){
-        separator = sisa ? '.' : '';
-        rupiah += separator + ribuan.join('.');
-      }
- 
-      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-      return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
-    }
-  </script>
-
-
-    <script type="text/javascript">
-    
-    var rupiahB = document.getElementById('jumlah_dibayar');
-    rupiahB.addEventListener('keyup', function(e){
-      // tambahkan 'Rp.' pada saat form di ketik
-      // gunakan fungsi formatRupiahB() untuk mengubah angka yang di ketik menjadi format angka
-      rupiahB.value = formatRupiahB(this.value, '');
-    });
- 
-    /* Fungsi formatRupiahB */
-    function formatRupiahB(angka, prefix){
-      var number_string = angka.replace(/[^,\d]/g, '').toString(),
-      split       = number_string.split(','),
-      sisa        = split[0].length % 3,
-      rupiahB        = split[0].substr(0, sisa),
-      ribuan        = split[0].substr(sisa).match(/\d{3}/gi);
- 
-      // tambahkan titik jika yang di input sudah menjadi angka ribuan
-      if(ribuan){
-        separator = sisa ? '.' : '';
-        rupiahB += separator + ribuan.join('.');
-      }
- 
-      rupiahB = split[1] != undefined ? rupiahB + ',' + split[1] : rupiahB;
-      return prefix == undefined ? rupiahB : (rupiahB ? '' + rupiahB : '');
-    }
-  </script>
   
 @stop

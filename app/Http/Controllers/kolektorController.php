@@ -21,11 +21,16 @@ class kolektorController extends Controller
     }
 
     public function lihat_notifikasi($kategori,$id){
-        if ($kategori == "update tagihan") {
+        if ($kategori == "update tagihan" || $kategori = "verifikasi pembayaran") {
             notifikasi::find($id)->update([
                 "status" => "sudah dibaca"
             ]);
             return redirect(url('kolektor/pembayaran_kepada_admin'));
+        }elseif ($kategori == "pembayaran tagihan") {
+            notifikasi::find($id)->update([
+                "status" => "sudah dibaca"
+            ]);
+            return redirect(url('kolektor/pembayaran_anggota'));
         }
     }
 
@@ -39,7 +44,7 @@ class kolektorController extends Controller
     }
 
     public function notifikasi(){
-        $notifikasis = notifikasi::where('penerima',auth()->guard('kolektor')->id())->orderBy('created_at','desc')->get();
+        $notifikasis = notifikasi::where('penerima',auth()->guard('kolektor')->id())->where('level_penerima','kolektor')->orderBy('created_at','desc')->get();
         return view('kolektor.notifikasi',compact('notifikasis'));
     }
 
@@ -249,6 +254,7 @@ class kolektorController extends Controller
                 "pengirim" => auth()->guard('kolektor')->id(),
                 "penerima" => $tagihan->anggota_kolektor_id,
                 "kategori" => "update tagihan anggota",
+                "level_penerima" => "anggota",
                 "id_kategori" => $id, 
                 "deskripsi" => "tagihan telah diperbarui", 
                 "status" => "belum dibaca" 
@@ -309,6 +315,7 @@ class kolektorController extends Controller
                 "pengirim" => auth()->guard('kolektor')->id(),
                 "penerima" => $pembayaran->anggota_kolektor_id,
                 "kategori" => "verifikasi pembayaran",
+                "level_penerima" => "anggota",
                 "id_kategori" => $pembayaran->id, 
                 "deskripsi" => "pembayaran anda telah diverifikasi", 
                 "status" => "belum dibaca" 
@@ -430,6 +437,7 @@ class kolektorController extends Controller
                 "pengirim" => auth()->guard('kolektor')->id(),
                 "penerima" => 'admin',
                 "kategori" => "pembayaran tagihan",
+                "level_penerima" => "admin",
                 "id_kategori" => $pembayaran->id, 
                 "deskripsi" => auth()->guard('kolektor')->user()->nama." telah melakukan pembayaran tagihan", 
                 "status" => "belum dibaca" 

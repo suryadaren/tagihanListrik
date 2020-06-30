@@ -43,8 +43,8 @@
                     <td>{{$notif->created_at}}</td>
                     <td>{{$notif->deskripsi}}</td>
                     <td>
-                      <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                      <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                      <a href="/anggota/lihat_notifikasi/{{$notif->id}}" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a onclick="hapus('{{$notif->id}}')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
                     </td>
                   </tr>
                 @else
@@ -55,8 +55,8 @@
                     <td>{{$notif->created_at}}</td>
                     <td>{{$notif->deskripsi}}</td>
                     <td>
-                      <a onclick="lihat('nama','foto','jumlah_pembayaran','tanggal_pembayaran')" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
-                      <a onclick="hapus('id')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
+                      <a href="/anggota/lihat_notifikasi/{{$notif->id}}" class="btn btn-primary"><abbr title="Lihat"><i class="fa fa-eye"></i> </abbr></a>
+                      <a onclick="hapus('{{$notif->id}}')" class="btn btn-danger"><abbr title="Hapus"><i class="fa fa-trash"></i> </abbr></a>
                     </td>
                   </tr>
                 @endif
@@ -127,7 +127,8 @@
               <p>Apakah Anda yakin ingin menghapus notifikasi ini ?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <form action="/admin/kolektor/hapus">
+              <form name="form" method="post" action="/anggota/hapus_notifikasi">
+                {{csrf_field()}}
                 <input type="hidden" name="id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <input type="submit" value="Ya" class="btn btn-primary">
@@ -146,6 +147,7 @@
     $('#lihat').modal();
   }
   function hapus(id){
+    document.forms['form']['id'].value=id;
     $('#hapus').modal();
   }
   function setujui(id){
